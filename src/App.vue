@@ -1,17 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="todoBox">
+    <todo v-for="[todoIndex, todoItem] in todos.entries()"
+          :key="todoIndex"
+          :todoItem="todoItem"
+          :listPos="todoIndex"
+          ></todo>
+    <input v-model="newTodo" @keyup.enter="addTodo">
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import todo from './components/todo.vue'
+import exportBus from './bus.js'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    todo
+  },
+  data: function () {
+    return {
+      todos: [],
+      newTodo: ""
+    }
+  },
+  created: function () {
+    exportBus.$on('delTodo', (event) => {
+      this.todos.splice(event, 1)
+    })
+  },
+  methods: {
+    addTodo: function() {
+      this.todos.push(this.newTodo)
+      this.newTodo = ""
+    }
   }
 }
 </script>
@@ -21,8 +45,18 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  justify-content: center;
+  display: flex;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+input {
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+}
+
+#todoBox {
+  width: 75%;
 }
 </style>
