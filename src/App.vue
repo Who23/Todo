@@ -59,4 +59,8 @@ input {
 #todoBox {
   width: 75%;
 }
+
+input {
+  outline: none;
+}
 </style>
