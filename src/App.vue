@@ -1,29 +1,35 @@
 <template>
   <div id="app">
-    <input v-model="newTodo" @keyup.enter="addTodo" placeholder="I need to...">
-    <div id="todoBox">
-    <todo v-for="[todoIndex, todoItem] in todos.entries()"
-          :key="todoIndex"
-          :todoItem="todoItem"
-          :listPos="todoIndex"
-          ></todo>
+    <who v-if="!inApp"></who>
+    <div v-if="inApp">
+      <input v-model="newTodo" @keyup.enter="addTodo" placeholder="I need to...">
+      <div id="todoBox">
+      <todo v-for="[todoIndex, todoItem] in todos.entries()"
+            :key="todoIndex"
+            :todoItem="todoItem"
+            :listPos="todoIndex"
+            ></todo>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import todo from './components/todo.vue'
+import who from './components/Who.vue'
 import exportBus from './bus.js'
 
 export default {
   name: 'app',
   components: {
-    todo
+    todo,
+    who
   },
   data: function () {
     return {
       todos: [],
-      newTodo: ""
+      newTodo: "",
+      inApp: false
     }
   },
   created: function () {
