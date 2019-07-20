@@ -1,7 +1,12 @@
 <template>
 <div>
-  <div @click="delTodo" id="button"><img :src="icon" @mouseenter="toggleIcon" @mouseleave="toggleIcon"></div>
-  <p>{{ todoItem }}</p>
+  <div class="itemDiv">
+    <div @click="delTodo" id="button"><img :src="icon" @mouseenter="toggleIcon" @mouseleave="toggleIcon"></div>
+    <p>{{ todoItem }}</p>
+  </div>
+  <div class="addedByDiv">
+    <p class="addedBy"> - {{ addedBy }}</p>
+  </div>
 </div>
 </template>
 
@@ -12,7 +17,7 @@ const hoverIcon = require('../assets/filled_check.png')
 
 export default {
   name: 'todo',
-  props: ['todoItem', 'listPos'],
+  props: ['todoItem', 'listPos', 'addedBy'],
   data: function() {
     return {
       icon: icon
@@ -46,7 +51,26 @@ p {
   display: inline;
   word-break: break-all;
   vertical-align: top;
+}
+
+.itemDiv {
+  display: inline-block;
   width: 90%;
+}
+
+.addedByDiv {
+  display: inline-block;
+  width: 10%;
+}
+
+.addedBy {
+  color: #2c3e5033;
+  align-content: right;
+  transition: 300ms;
+}
+
+.addedBy:hover {
+  color: #2c3e50aa;
 }
 
 #button {

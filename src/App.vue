@@ -6,10 +6,12 @@
       <div id="todoBox">
       <todo v-for="[todoIndex, todoItem] in todos.entries()"
             :key="todoIndex"
-            :todoItem="todoItem"
+            :todoItem="todoItem.todo"
+            :addedBy="todoItem.author"
             :listPos="todoIndex"
             ></todo>
       </div>
+      <button @click="inApp = false">{{ person }}</button>
     </div>
   </div>
 </template>
@@ -29,17 +31,23 @@ export default {
     return {
       todos: [],
       newTodo: "",
-      inApp: false
+      inApp: false,
+      person: "",
     }
   },
   created: function () {
     exportBus.$on('delTodo', (event) => {
       this.todos.splice(event, 1)
     })
+
+    exportBus.$on('iam', (event) => {
+      this.inApp = true
+      this.person = event
+    })
   },
   methods: {
     addTodo: function() {
-      this.todos.push(this.newTodo)
+      this.todos.push({ "todo" : this.newTodo, "author" : this.person })
       this.newTodo = ""
     }
   }
@@ -69,15 +77,33 @@ input {
   font-size: 15px;
   display: block;
   outline: none;
-  width: 90%;
+  width: calc(100% - 20px);
   border-radius: 15px;
   border: none;
   background-color: rgba(0, 0, 0, 0.05);
   color: #2c3e50;
 }
 
+button {
+  outline: none;
+  border: none;
+  margin: 10px;
+  padding: 5px 10px 5px 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+
+  font: 'Avenir', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-style: bold;
+
+  transition: 300ms;
+}
+
+button:hover {
+  transform: scale(1.5);
+}
+
 #todoBox {
-  width: 75%;
   display: block;
 }
 </style>
