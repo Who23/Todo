@@ -43,7 +43,14 @@ export default {
     exportBus.$on('iam', (event) => {
       this.inApp = true
       this.person = event
+      localStorage.who = event
     })
+  },
+  mounted: function () {
+    if (localStorage.who) {
+      this.inApp = true
+      this.person = localStorage.who
+    }
   },
   methods: {
     addTodo: function() {
