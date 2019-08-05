@@ -2,7 +2,7 @@
   <div id="app">
     <who v-if="!inApp"></who>
     <div v-if="inApp">
-      <input v-model="newTodo" @keyup.enter="addTodo" placeholder="I need to...">
+      <input id="todoInput" v-model="newTodo" @keyup.enter="addTodo" placeholder="I need to...">
       <div id="todoBox">
       <todo v-for="[todoIndex, todoItem] in todos.entries()"
             :key="todoIndex"
@@ -75,7 +75,7 @@ export default {
   margin-top: 40px;
 }
 
-input {
+#todoInput {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   margin-bottom: 20px;
   padding: 6px;
