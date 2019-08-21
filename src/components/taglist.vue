@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-for="[index, tag] in taglist.entries()" 
+  <div class="taglistContainer">
+    <div v-for="[index, tag] in Object.entries(taglist)" 
         :key="index" 
         :class="{ editing: editing == index, tagItem: true}" 
         @dblclick="setEdit(index)">
@@ -49,6 +49,7 @@ export default {
         this.editing = -1
       }
       this.taglist.splice(index, 1)
+      exportBus.$emit('tagUpdateTodo')
     },
     addTag: function() {
       this.taglist.push("")
@@ -62,6 +63,7 @@ export default {
     stopEdit: function() {
       this.taglist[this.editing] = this.edit
       this.editing = -1
+      exportBus.$emit('tagUpdateTodo')
     },
     onKeyDown(evt){
       if (this.edit.length >= 40) {
@@ -90,7 +92,7 @@ export default {
   word-wrap: break-word;
   background-color: aquamarine;
 
-  margin: 0px 3px;
+  margin: 2px 3px;
   padding: 2px 5px;
 
   transition: 200ms;
@@ -127,6 +129,8 @@ export default {
    border-radius: 5px;
    width: 20px;
    background-color: darkcyan;
+
+   margin: 2px 0px;
 
    transition: 400ms;
  }

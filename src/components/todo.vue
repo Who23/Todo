@@ -2,7 +2,8 @@
 <div>
   <div class="itemDiv">
     <div @click="delTodo" id="button"><img :src="icon" @mouseenter="toggleIcon" @mouseleave="toggleIcon"></div>
-    <p>{{ todoItem }}</p>
+    <p v-if="!editing" @click="editing=true">{{ todoItem }}</p>
+    <input  @keyup.enter="editTodo" v-model="todoItem" v-else>
     <taglist :taglist="tags" style="margin-top: 0px;"></taglist>
   </div>
   <div class="addedByDiv">
@@ -15,21 +16,25 @@
 import exportBus from '../bus.js'
 import taglist from './taglist.vue'
 
-
 const icon = require('../assets/check.png')
 const hoverIcon = require('../assets/filled_check.png')
 
 export default {
   name: 'todo',
-  props: ['todoItem', 'listPos', 'addedBy'],
+  props: ['todoItem', 'listPos', 'addedBy', 'tags'],
   components: {
     taglist
   },
   data: function() {
     return {
       icon: icon,
-      tags: []
+      editing: false,
     }
+  },
+  created: function() {
+    exportBus.$on('tagUpdateTodo', () => {
+      exportBus.$emit('tagUpdate', [this.listPos, this.tags])
+    })
   },
   methods: {
     delTodo: function() {
@@ -41,6 +46,10 @@ export default {
       } else {
         this.icon = icon
       }
+    },
+    editTodo: function() {
+      this.editing = false
+      exportBus.$emit('todoEdit', [this.todoItem, this.listPos])
     }
   }
 }
